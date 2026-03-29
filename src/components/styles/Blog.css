@@ -131,6 +131,15 @@
   border-radius: 8px;
   border: 1px solid oklch(var(--b3));
   -webkit-overflow-scrolling: touch;
+  /* Break out of the prose max-width on large screens */
+  width: 100%;
+}
+
+@media (min-width: 1024px) {
+  .blog-content .table-wrapper {
+    width: calc(100% + 12rem);
+    margin-left: -6rem;
+  }
 }
 
 .blog-content table {
