@@ -120,8 +120,7 @@ export default function FootnoteSlideOver(): JSX.Element {
                       <div className="relative flex-1 px-4 sm:px-6">
                         {Object.entries($customFootnotes).map(([key, value]) => {
                           const avatar = avatars[key];
-                          console.log('avatar', avatar);
-                          if (value !== null) {
+                          if (avatar && value !== null) {
                             return (
                               <div key={key}>
                                 <div className="flex items-center mb-4">
