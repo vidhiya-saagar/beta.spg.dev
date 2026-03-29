@@ -18,11 +18,16 @@ const { title, includeNav = true } = Astro.props;
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
-    {includeNav && <Nav client:load />}
-    <slot name="extra-headers" />
+    <!-- Apply saved theme before first paint to prevent flash -->
+    <script is:inline>
+      const t = localStorage.getItem('theme');
+      if (t) document.documentElement.setAttribute('data-theme', t);
+    </script>
     <ViewTransitions />
   </head>
   <body class="px-4 py-8 sm:px-6 lg:px-8">
+    {includeNav && <Nav client:load />}
+    <slot name="extra-headers" />
     <slot />
   </body>
 </html>
