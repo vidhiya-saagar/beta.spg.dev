@@ -33,6 +33,11 @@
     "theme-change": "^2.5.0"
   },
   "devDependencies": {
-    "@contentful/rich-text-types": "^16.0.3"
+    "@astrojs/check": "^0.9.8",
+    "@contentful/rich-text-types": "^16.0.3",
+    "typescript": "^6.0.2"
+  },
+  "engines": {
+    "node": ">=24"
   }
 }
