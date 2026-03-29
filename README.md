@@ -31,25 +31,46 @@ yarn run dev
 
 This should open the server on http://localhost:4321/books
 
+## Build Pipeline
+
+### How Astro builds the site
+
+When you run `yarn run build`, Astro performs a **static site generation (SSG)** pass — it renders every page ahead of time and outputs plain HTML files to `./dist/`. This means users get fast, pre-built HTML rather than waiting for server-side rendering on each request.
+
+**How pages are generated:**
+
+- **`/books` and `/chapters/[id]`** — Astro calls `getStaticPaths()` at build time, which fetches all chapters from the local Rails API (`API_URL`). Each chapter becomes its own pre-rendered HTML file under `dist/chapters/`.
+- **`/blog` and `/blog/[slug]`** — Astro calls `getStaticPaths()` at build time, which fetches all blog entries from **Contentful** (a headless CMS) using the `CMS_SPACE_ID` and `CMS_ACCESS_TOKEN` credentials. Each blog post becomes its own HTML file under `dist/blog/`. The blog index page also fetches from Contentful to list all posts.
+
+In short: **both the Rails API and Contentful must be reachable at build time**, or the build will fail. In local dev (`yarn run dev`), these fetches happen on-demand per request instead of all at once.
+
+### Contentful
+
+Blog content lives in Contentful as entries of content type `page`. Each entry has a slug, title, rich-text body, artwork, category, and meta description. The Contentful client is initialized in `src/helpers/contentful.js` using the env vars below.
+
 ## Deployment
 
 This app uses Vercel to deploy over [here](https://vercel.com/is-null/wireframes-astro). For some reason, the Project is named `is-null`. I don't know why, but we should fix that soon lol.
 
-Once something merged, it automatically deploys with Vercel. Ensure we have all the appropriate `env`s setup:
+Once something is merged, it automatically deploys with Vercel. Ensure we have all the appropriate `env`s set up in the Vercel project settings:
 
 ### ENVs
 
 ```env
+# Local Rails API (spg2) — use the production URL on Vercel
 API_URL=http://localhost:1843/
 
-# CONTENTFUL CONFIG
-CMS_SPACE_ID=#
-CMS_ACCESS_TOKEN=#
+# Contentful CMS — required for /blog pages to build
+CMS_SPACE_ID=
+CMS_ACCESS_TOKEN=
 
-CLOUDINARY_CLOUD_NAME=#
-CLOUDINARY_API_KEY=#
-CLOUDINARY_API_SECRET=#
+# Cloudinary
+CLOUDINARY_CLOUD_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
 ```
+
+Copy `.env` from this template and fill in the values. The `.env` file is gitignored.
 
 ## 🚀 Project Structure
 

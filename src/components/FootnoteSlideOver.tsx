@@ -3,7 +3,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { useStore } from '@nanostores/react';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
-import { BLOCKS } from '@contentful/rich-text-types';
+import { contentfulOptions } from '../helpers/contentfulRichText';
 import './styles/Blog.css';
 import {
   isOpen,
@@ -17,29 +17,6 @@ const avatars = {
     'https://res.cloudinary.com/dip5mdxwe/image/upload/c_scale,w_64,h_64,q_auto/v1681488757/273458479_733618817604431_6653348205549108853_n_uiglgd.jpg',
   'Vidhiya Saagar':
     'https://res.cloudinary.com/dip5mdxwe/image/upload/c_scale,w_64,h_64,q_auto/v1681487920/logo_copy_gpjbxt.png',
-};
-
-const contentfulOptions = {
-  renderNode: {
-    [BLOCKS.EMBEDDED_ASSET]: (node) => {
-      const { title, description } = node.data.target.fields;
-      const { url, contentType } = node.data.target.fields.file;
-      const isPdf = contentType === 'application/pdf';
-
-      return isPdf ? (
-        <div>
-          <a href={url} download>
-            {title}
-          </a>
-        </div>
-      ) : (
-        <figure>
-          <img src={url} alt={title} loading="lazy" />
-          {description && <figcaption>{description}</figcaption>}
-        </figure>
-      );
-    },
-  },
 };
 
 export default function FootnoteSlideOver(): JSX.Element {
@@ -120,8 +97,7 @@ export default function FootnoteSlideOver(): JSX.Element {
                       <div className="relative flex-1 px-4 sm:px-6">
                         {Object.entries($customFootnotes).map(([key, value]) => {
                           const avatar = avatars[key];
-                          console.log('avatar', avatar);
-                          if (value !== null) {
+                          if (avatar && value !== null) {
                             return (
                               <div key={key}>
                                 <div className="flex items-center mb-4">
