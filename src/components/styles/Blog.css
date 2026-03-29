@@ -168,7 +168,7 @@
 .blog-content td {
   padding: 0.8125rem 1.25rem;
   border-bottom: 1px solid oklch(var(--b3));
-  vertical-align: top;
+  vertical-align: middle;
   line-height: 1.55;
 }
 
